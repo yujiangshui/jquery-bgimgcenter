@@ -6,8 +6,79 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="jQuery-bgimgcenter : bgimgcenter 让背景图片 无拉伸、无变形、无缝隙、很居中" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <script src="http://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
 
+    <script>
+/**
+ * BGimgcenter v1.1
+ * 让背景图片 无拉伸、无变形、无缝隙、很居中
+ * 作者：http://yujiangshui.com
+ * 项目地址：https://github.com/yujiangshui/jquery.bgimgcenter.js
+ *
+ * Copyright 2014, Jiangshui Yu
+ * MIT license
+ */
+;(function($){
+
+    $.fn.extend({
+        'bgimgcenter':function(options){
+
+            if( !options.width || ! options.height ){
+               return false;
+            }
+
+            var _this = this,
+                bgimgRate = options.width / options.height;
+
+            var calPosition = function calPosition(_this){
+
+                var windowWidth = (options.target == 'window') ? $(window).width() : $(_this).parent().width(),
+                    windowHeight = (options.target == 'window') ? $(window).height() : $(_this).parent().height(),
+                    windowRate = windowWidth / windowHeight,
+                    marginLeft = ( windowHeight * bgimgRate - windowWidth ) / 2,
+                    marginTop = ( windowWidth / bgimgRate - windowHeight ) / 2;
+
+                if ( windowRate < bgimgRate ) {
+                    $(_this).css({
+                        'height': windowHeight + 'px',
+                        'width':( windowHeight * bgimgRate )+'px',
+                        'margin-top':0,
+                        'margin-left':'-' + marginLeft + 'px'
+                    });
+                }else{
+                    $(_this).css({
+                        'height':( windowWidth / bgimgRate ) + 'px',
+                        'width': windowWidth + 'px',
+                        'margin-left':0,
+                        'margin-top':'-'+ marginTop + 'px'
+                    });
+                }
+
+            }
+
+            calPosition(_this);
+            $(window).resize(function(event) {
+                calPosition(_this);
+            });
+        }
+    });
+
+})(jQuery);
+    </script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <style>
+
+    .body-bg{
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+    .body-bg img{
+      display: block;
+    }
+
+    </style>
     <title>jQuery-bgimgcenter</title>
   </head>
 
@@ -31,37 +102,137 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h1>jquery-bgimgcenter</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>jquery.bgimgcenter.js 让背景图片 无拉伸、无变形、无缝隙、很居中</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h2>产生原因</h2>
+
+<p>当使用背景图片的时候，使用常规的 CSS 来布局图片，都会遇到 有缝隙、被浏览器拉伸变形 等等。但是又有这种需求，我就封装了这样一个小插件。先来看下效果</p>
+
+<p><img src="http://jiangshui.b0.upaiyun.com/works/bgimgcenter/bgimgcenter.gif" alt="jquery-bgimgcenter 效果" /></p>
+
+<h2>插件原理</h2>
+
+<p>看一下源代码就可以明白，就是计算一下窗口的宽高和图片的宽高，然后计算偏移量使其居中并且占满窗口高度或者宽度，很简单的小玩意~</p>
+
+<h2>使用方法</h2>
+
+<h3>引入文件</h3>
+
+<p>下载压缩包，将 <code>jquery.bgimgcenter.js</code> 文件引入页面中。或者将代码复制到项目文件中。</p>
+
+<h3>HTML 和 CSS 代码</h3>
+
+<p>为了控制更加灵活同时兼顾兼容性，所以使用 img 来“模拟”背景图片，而不是 CSS background 的方法。你需要对插件传递进去一个 img 元素。</p>
+
+<p>模拟背景图片常用和推荐的结构：</p>
+
+<pre><code>&lt;div class="body-bg"&gt;
+    &lt;img src="images/body-bg.jpg" alt="" width="1000" height="667"&gt;
+&lt;/div&gt; 
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>通常还需要设置下面 CSS：</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<pre><code>.body-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+.body-bg img{
+    display: block;
+    max-width: none;
+}
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>这样就模拟出一个固定的背景图片。当然，上面代码只是推荐代码，你可以根据你的项目需求，自定义结构。<strong>但是需要注意的是，对于 img 不要设置 `max-width: 100%` 这样会使图片拉伸。</strong></p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<h3>调用插件</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>使用如下代码启用这个插件：</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<pre><code>$('.body-bg img').bgimgcenter({
+    width: 1000,
+    height: 667,
+    target: 'window'
+});
+</code></pre>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p><code>width</code> 和 <code>height</code> 分别是图片的原始尺寸，是必须传递的参数。<code>target</code> 参数是可选参数，表示计算参照物是指当前的窗口（window）还是父元素尺寸。不设置此参数，表示根据父元素尺寸计算，具体效果如下：</p>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<h4>依据当前窗口尺寸的效果</h4>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>CSS 代码：</p>
+
+<pre><code>.body-bg{
+    width: 800px;
+    height: 200px;
+    overflow: hidden;
+}
+</code></pre>
+
+<p>JS 代码：</p>
+
+<pre><code>$('#target-window img').bgimgcenter({
+    width: 1000,
+    height: 667,
+    target: 'window'
+});
+</code></pre>
+
+<p>效果：</p>
+<script>
+  $(function(){
+    $('#target-window img').bgimgcenter({
+        width: 1000,
+        height: 667,
+        target: 'window'
+    });
+  });
+</script>
+<div id="target-window" class="body-bg">
+  <img src="http://jiangshui.b0.upaiyun.com/works/bgimgcenter/temp/body-bg.jpg" alt="" width="1000" height="667">
+</div>
+
+<h4>依据当前父级元素尺寸的效果</h4>
+
+<p>CSS 代码：</p>
+
+<pre><code>.body-bg{
+    width: 800px;
+    height: 200px;
+    overflow: hidden;
+}
+</code></pre>
+
+<p>JS 代码：</p>
+
+<pre><code>$('#target-parent img').bgimgcenter({
+    width: 1000,
+    height: 667
+});
+</code></pre>
+
+<p>效果：</p>
+<script>
+  $(function(){
+    $('#target-parent img').bgimgcenter({
+        width: 1000,
+        height: 667
+    });
+  });
+</script>
+<div id="target-parent" class="body-bg">
+  <img src="http://jiangshui.b0.upaiyun.com/works/bgimgcenter/temp/body-bg.jpg" alt="" width="1000" height="667">
+</div>
+
+<h2>使用协议</h2>
+
+<p>基于 MIT 协议。</p>
       </section>
     </div>
 

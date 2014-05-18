@@ -16,11 +16,9 @@ jquery.bgimgcenter.js 让背景图片 无拉伸、无变形、无缝隙、很居
 
 ##使用方法
 
-推荐查看 [Demo](http://jsfiddle.net/yujiangshui/7YtPq/)，这里面有具体的代码示例。
-
 ###引入文件
 
-下载压缩包，将 `jquery.bgimgcenter.min.js` 文件引入页面中。
+下载压缩包，将 `jquery.bgimgcenter.js` 文件引入页面中。或者压缩复制到项目文件中。
 
 ###HTML 和 CSS 代码
 
@@ -51,32 +49,54 @@ jquery.bgimgcenter.js 让背景图片 无拉伸、无变形、无缝隙、很居
 
 	$('.body-bg img').bgimgcenter({
 	    width: 1000,
+	    height: 667,
+	    target: 'window'
+	});
+
+`width` 和 `height` 分别是图片的原始尺寸，是必须传递的参数。`target` 参数是可选参数，表示计算参照物是指当前的窗口（window）还是父元素尺寸。不设置此参数，表示根据父元素尺寸计算，具体效果如下：
+
+####依据当前窗口尺寸的效果
+
+CSS 代码：
+
+	.body-bg{
+		width: 800px;
+		height: 200px;
+	}
+
+
+JS 代码：
+
+
+	$('.body-bg img').bgimgcenter({
+	    width: 1000,
+	    height: 667,
+	    target: 'window'
+	});
+
+
+####依据当前父级元素尺寸的效果
+
+CSS 代码：
+
+	.body-bg{
+		width: 800px;
+		height: 200px;
+	}
+
+
+JS 代码：
+
+
+	$('.body-bg img').bgimgcenter({
+	    width: 1000,
 	    height: 667
 	});
 
-`width` 和 `height` 分别是图片的原始尺寸，是必须传递的参数。为什么没有用程序自动获取图片的尺寸而需要人工传递？因为图片加载需要一定时间，图片先加载完之后，JS 才进行计算处理的话，会出现闪烁的情况。
+效果：
 
-因为调整窗口之后，需要重新计算位置，所以一般使用下面代码：
 
-	$(document).ready(function() {
-		$('.body-bg img').bgimgcenter({
-		    width: 1000,
-		    height: 667
-		});
-	});
-	
-	$(window).resize(function(){
-	    $('.body-bg img').bgimgcenter({
-	        width:1000,
-	        height:667
-	    });
-	
-	});
-
-当然，你完全可以使用函数节流的方法，对 `resize` 时间进行性能优化处理，这里就按照你的需求来吧！
 
 ##使用协议
 
 基于 MIT 协议。
-
-免费开源，自由使用，像 WordPress 那样 ：D
