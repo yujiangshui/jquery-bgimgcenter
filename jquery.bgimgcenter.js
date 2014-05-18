@@ -2,7 +2,7 @@
  * BGimgcenter v1.1
  * 让背景图片 无拉伸、无变形、无缝隙、很居中
  * 作者：http://yujiangshui.com
- * 项目地址：https://github.com/yujiangshui/jquery.bgimgcenter.js
+ * 项目地址：https://github.com/yujiangshui/jquery-bgimgcenter
  *
  * Copyright 2014, Jiangshui Yu
  * MIT license
