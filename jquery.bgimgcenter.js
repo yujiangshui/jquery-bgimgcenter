@@ -21,8 +21,8 @@
 
             var calPosition = function calPosition(_this){
 
-                var windowWidth = (options.target == 'window') ? $(windwo).width() : $(_this).parent().width(),
-                    windowHeight = (options.target == 'window') ? $(windwo).height() : $(_this).parent().height(),
+                var windowWidth = (options.target == 'window') ? $(window).width() : $(_this).parent().width(),
+                    windowHeight = (options.target == 'window') ? $(window).height() : $(_this).parent().height(),
                     windowRate = windowWidth / windowHeight,
                     marginLeft = ( windowHeight * bgimgRate - windowWidth ) / 2,
                     marginTop = ( windowWidth / bgimgRate - windowHeight ) / 2;
