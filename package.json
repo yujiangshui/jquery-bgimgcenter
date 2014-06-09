@@ -1,0 +1,22 @@
+{
+  "name": "jquery-bgimgcenter",
+  "version": "1.0.1",
+  "description": "Make img background center.",
+  "main": "jquery.bgimgcenter.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yujiangshui/jquery-bgimgcenter.git"
+  },
+  "author": "yujiangshui",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yujiangshui/jquery-bgimgcenter/issues"
+  },
+  "homepage": "https://github.com/yujiangshui/jquery-bgimgcenter",
+  "devDependencies": {
+    "gulp": "^3.7.0",
+    "gulp-jshint": "^1.6.2",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.3.0"
+  }
+}

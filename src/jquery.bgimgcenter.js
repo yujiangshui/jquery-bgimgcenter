@@ -7,7 +7,7 @@
  * Copyright 2014, Jiangshui Yu
  * MIT license
  */
-;(function($){
+(function($){
 
     $.fn.extend({
         'bgimgcenter':function(options){
@@ -43,7 +43,7 @@
                     });
                 }
 
-            }
+            };
 
             calPosition(_this);
             $(window).resize(function(event) {
