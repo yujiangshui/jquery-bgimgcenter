@@ -1,6 +1,8 @@
 jquery-bgimgcenter
 =====================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/yujiangshui/jquery-bgimgcenter.svg)](https://greenkeeper.io/)
+
 jquery.bgimgcenter.js 让背景图片 无拉伸、无变形、无缝隙、很居中
 
 具体效果和用法请看：<http://yujiangshui.github.io/jquery-bgimgcenter/>
